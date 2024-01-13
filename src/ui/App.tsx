@@ -1,16 +1,18 @@
 import { ThemeProvider } from 'styled-components';
 
-import { Button } from 'react95';
 // pick a theme of your choice
-import original from 'react95/dist/themes/original';
+import redWine from 'react95/dist/themes/blue';
 import GlobalStyles from './globalStyles';
+import InfoContainer from './smarts/InfoContainer';
+import DayPicker from './smarts/DayPicker';
 
 
 const App = () => (
   <div>
-    <GlobalStyles />
-    <ThemeProvider theme={original}>
-      <Button primary>Primary</Button>
+    <ThemeProvider theme={redWine}>
+      <GlobalStyles />
+      <InfoContainer />
+      <DayPicker />
     </ThemeProvider>
   </div>
 );
