@@ -4,15 +4,24 @@ import { ThemeProvider } from 'styled-components';
 import redWine from 'react95/dist/themes/blue';
 import GlobalStyles from './globalStyles';
 import InfoContainer from './smarts/InfoContainer';
-import DayPicker from './smarts/DayPicker';
+import CraPicker from './smarts/CraPicker';
+import dayjs from 'dayjs';
+import utc from "dayjs/plugin/utc";
 
+dayjs.extend(utc)
 
 const App = () => (
   <div>
     <ThemeProvider theme={redWine}>
       <GlobalStyles />
-      <InfoContainer />
-      <DayPicker />
+      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 50}}>
+        <div>
+          <InfoContainer />
+        </div>
+        <div>
+          <CraPicker />
+        </div>
+      </div>
     </ThemeProvider>
   </div>
 );
