@@ -29,10 +29,6 @@ const fillCraDay = (chosenMonth: MonthChoose): CraDay[] => {
 
     const firstDay = actualMonth.startOf('month');
     const lastDay = actualMonth.endOf('month');
-
-    //console.log("actualMonth: ", actualMonth);
-    //console.log("firstDay: ", firstDay)
-    //console.log("lastDay: ", lastDay)
     
     return Array.from(Array(lastDay.diff(firstDay, 'day')).keys()).map((d) => {
         const day = firstDay.clone();
@@ -41,16 +37,21 @@ const fillCraDay = (chosenMonth: MonthChoose): CraDay[] => {
 }
 
 export class Cra {
-    private days: CraDay[];
+
+    private _days: CraDay[];
 
     private constructor() {
-        this.days = [];
+        this._days = [];
     }
 
     public static of(chosenMonth: MonthChoose): Cra {
-        //console.log("chosenMonth: ", chosenMonth)
         const cra = new Cra();
-        cra.days = fillCraDay(chosenMonth);
+        cra._days = fillCraDay(chosenMonth);
         return cra;
     }
+
+    get days(): CraDay[] {
+        return this._days;
+    }
+
 }

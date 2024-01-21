@@ -1,14 +1,14 @@
 import { Window, WindowContent, WindowHeader } from "react95";
 import MonthChooser from "../dumbs/MonthChooser";
-import { useState } from "react";
 import { MonthChoose } from "../../domain/Cra";
 import DayPicker from "../dumbs/DayPicker";
+import {useCraStore} from "../store/craStore.ts";
 
 const CraPicker = () => {
-    const [chosenMonth, setChosenMonth] = useState<MonthChoose>(MonthChoose.actual());
+   const { choosenMonth, changeMonth } = useCraStore();
 
     const handleMonthChange = (monthChose: MonthChoose) => {
-        setChosenMonth(monthChose);
+        changeMonth(monthChose);
     }
 
     return (
@@ -17,8 +17,8 @@ const CraPicker = () => {
                 Choisir une date
             </WindowHeader>
             <WindowContent>
-                <MonthChooser onSubmit={handleMonthChange} defaultChosenMonth={chosenMonth} />
-                <DayPicker chosenMonth={chosenMonth} />
+                <MonthChooser onSubmit={handleMonthChange} defaultChoosenMonth={choosenMonth} />
+                <DayPicker choosenMonth={choosenMonth} />
             </WindowContent>
         </Window>
     );

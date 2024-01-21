@@ -23,7 +23,6 @@ const Forms = ({ onSubmit }: { onSubmit: (input: FormsInput) => void }) => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
       } = useForm<FormsInput>()
 
       const onSubmitForm: SubmitHandler<FormsInput> = (data) => onSubmit(data);

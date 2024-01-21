@@ -18,23 +18,22 @@ const allYears = () => {
     const endYear = actualYears + YEARS_RANGE;
 
     return Array.from(Array(endYear - startYear).keys()).map((year) => {
-        return { value: year, label: Number.parseInt(dayjs().year(startYear + year).format('YYYY')) };
+        return { value: year, label: dayjs().year(startYear + year).format('YYYY') };
     });
 };
 
-const MonthChooser = ({ onSubmit, defaultChosenMonth }: { onSubmit: (monthChose: MonthChoose) => void, defaultChosenMonth: MonthChoose }) => {
+const MonthChooser = ({ onSubmit, defaultChoosenMonth }: { onSubmit: (monthChose: MonthChoose) => void, defaultChoosenMonth: MonthChoose }) => {
 
-    const [selectedMonth, setSelectedMonth] = useState<MonthChoose>(defaultChosenMonth);
+    const [selectedMonth, setSelectedMonth] = useState<MonthChoose>(defaultChoosenMonth);
 
     useEffect(() => {
         onSubmit(selectedMonth);
     }, [selectedMonth]);
 
-    const defaultMonthIndex = defaultChosenMonth.month;
-    const defaultYearsIndex = allYears().findIndex((year) => year.label === defaultChosenMonth.year);
+    const defaultMonthIndex = defaultChoosenMonth.month;
+    const defaultYearsIndex = allYears().findIndex((year) => Number.parseInt(year.label) == defaultChoosenMonth.year);
     
     const onYearChange = ((selectedOption: SelectOption<number>) => {
-        console.log("selectedOption: ", selectedOption)
         setSelectedMonth({ ...selectedMonth, year: Number.parseInt(selectedOption.label!) });
     });
 
