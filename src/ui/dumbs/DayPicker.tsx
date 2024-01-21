@@ -1,52 +1,57 @@
 import { GroupBox, NumberInput } from "react95";
-import dayjs, { Dayjs } from "dayjs";
-import {MonthChoose} from "../../domain/Cra.tsx";
+import { Dayjs } from "dayjs";
+import { Cra } from "../../domain/Cra.tsx";
 
 
-const DayPicker = ({ choosenMonth }: { choosenMonth: MonthChoose }) => {
+const DayPicker = ({ cra, onChange }: { cra: Cra, onChange: (day: Dayjs, value: number) => void }) => {
 
-    const actualMonth = dayjs().month(choosenMonth.month).year(choosenMonth.year);
-    const lastDay = actualMonth.endOf('month');
-    const firstDay = actualMonth.startOf('month');
-    const allDaysPicker = () => {
-        const weeks = Math.ceil((lastDay.diff(firstDay, 'day') + 1) / 7);
-        
-        return Array.from(Array(weeks).keys()).map((week) => {
-            const firstDayOfWeek = firstDay.add(week, 'week');
-            const lastDayOfWeek = firstDayOfWeek.add(1, 'week');
+    const onDayHoursChange = (day: Dayjs, value: number) => {
+        //onChange(day, value);
+    }
 
-            const daysPickerOfWeek = Array.from(Array(lastDayOfWeek.diff(firstDayOfWeek, 'day')).keys()).map((d) => {
-                const day = firstDayOfWeek.add(d, 'day');
+    const numberOfWeek = Math.ceil(cra.days.length / 7);
 
-                if (day.month() !== actualMonth.month())
-                    return;
-                return <DayPicker.Day day={day}/>;
-            });
+    const daysByWeekIndex = (weekIndex: number) => {
+        const start = weekIndex * 7;
+        const end = start + 7;
+        return cra.days.slice(start, end);
+    }
 
-            return <GroupBox label={`Week #${week + 1}`} style={{ width: 450 }}>
-                {daysPickerOfWeek}
+    const Week = ({ weekIndex }: { weekIndex: number }) => {
+            return <GroupBox label={`Week #${weekIndex + 1}`} style={{ width: 450 }}>
+                {daysByWeekIndex(weekIndex).map((day) => (
+                    <DayPicker.Day day={day.day} onChange={onDayHoursChange} />
+                ))}
             </GroupBox>
-        });
     };
 
+    const AllWeeks = () => {
+        return Array.from(Array(numberOfWeek).keys()).map((weekIndex) => (
+                <Week weekIndex={weekIndex} />
+            ))
+    }
         
     return (
         <GroupBox style={{ display: 'flex', gap: 15, flexWrap: 'wrap', maxWidth: 1000 }}>
-            {allDaysPicker()}
+            <AllWeeks />
         </GroupBox>
     );
 };
 
-DayPicker.Day = ({ day }: { day: Dayjs }) => {
+DayPicker.Day = ({ day, onChange }: { day: Dayjs, onChange: (day: Dayjs, value: number) => void }) => {
 
     const isWeekend = day.get('day') === 0 || day.get('day') === 6;
 
     const defaultValue = isWeekend ? 0 : 1;
 
+    const handleValueChange = (value: number) => {
+        onChange(day, value);
+    }
+
     return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         {day.format('dddd DD/MM/YYYY')}
-        <NumberInput width={75} defaultValue={defaultValue}/>
+        <NumberInput width={75} defaultValue={defaultValue} onChange={handleValueChange}/>
     </div>);
 };
 

@@ -10,7 +10,7 @@ const InfoContainer = () => {
     return (
       <Window style={{ width: '500px' }}>
         <WindowHeader>
-          Information.exe
+          Information
         </WindowHeader>
         <WindowContent>
             <Forms onSubmit={saveFormsData}/>
